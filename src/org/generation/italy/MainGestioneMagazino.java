@@ -130,7 +130,7 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 			    			System.out.println("Codice prodotto non valido");
 			    	}while(!prodotti.containsKey(m.codiceProdotto));
 			    	
-			   // verificaCodice(sc, prodotti, mE);
+			   // verificaCodice(sc, prodotti, mE);,
 			    	
 			    	System.out.println("Inserisci la quantitá del prodotto");
 			    	m.quantitaProdotto=sc.nextInt();
