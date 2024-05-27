@@ -72,9 +72,9 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 
 		Movimento m;
 		DateTimeFormatter df=DateTimeFormatter.ofPattern("dd/MM/yyyy");	//data cutomizzata dd(giorno) MM(mese) yyyy(anno 4 cifre)
-		int sceltaMenu;			//menu principale
+		String sceltaMenu;			//menu principale
 		String sceltaOpz;		//menu secondario
-		int sceltaMenu2;
+		String sceltaMenu2;
 		String codiceProdottoScelto;
 		int giacenza = 0;
 
@@ -107,7 +107,6 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 	    
 	    do {
 	    	
-    		sceltaMenu2=0;
 
 		    System.out.println("Menu Principale: Scegli il numero corrispondente");
 		    System.out.println("(1) Inserimento movimento in entrata");
@@ -115,126 +114,162 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		    System.out.println("(3) Visualizzazione movimenti in entrata");
 		    System.out.println("(4) Visualizzazione movimenti in uscita");
 		    System.out.println("(5) Visualizzazione giacenza prtodotti");
-		    sceltaMenu=sc.nextInt();
-		    sc.nextLine();
-		    if(sceltaMenu==1){
+		    System.out.println("\n\n(6) Per uscire");
+
+    		sceltaMenu2="1";
+
+		    sceltaMenu=sc.nextLine();
+		    
+		    if(sceltaMenu.equals("1")){
 		    	do {
+		    		sceltaMenu2="2";
+
 		    		m=new Movimento();
 			    	System.out.println("Stai inserendo un movimento in entrata");
 			    	System.out.println("inserisci la data del movimento (gg/mm/aaaa): ");
-			    	m.data=LocalDate.parse(sc.nextLine(), df);
-			    	do{
+			    	//m.data=LocalDate.parse(sc.nextLine(), df);
+			    	  try {
+	                        m.data = LocalDate.parse(sc.nextLine(), df);
+	                    } catch (Exception e) {
+	                        System.out.println("Data non valida. Riprova.");
+	                        continue;
+	                    }
+			    	/*do{
 			    		System.out.println("Inserisci il codice del prodotto");
 			    		m.codiceProdotto=sc.nextLine().toUpperCase();
 			    		if(!prodotti.containsKey(m.codiceProdotto))
 			    			System.out.println("Codice prodotto non valido");
-			    	}while(!prodotti.containsKey(m.codiceProdotto));
+			    	}while(!prodotti.containsKey(m.codiceProdotto));*/
 			    	
-			   // verificaCodice(sc, prodotti, mE);,
+			    	m.codiceProdotto=verificaCodice(sc, prodotti, "Inserisci il codice del prodotto","P");
 			    	
 			    	System.out.println("Inserisci la quantitá del prodotto");
 			    	m.quantitaProdotto=sc.nextInt();
 			    	sc.nextLine();
 			    	
-			    	do{
-			    		System.out.println("Inserisci il codice del movimento");
-			    		m.codiceMovimento=sc.nextLine().toUpperCase();
-			    		if(!tipologieMovimento.containsKey(m.codiceMovimento))
-			    			System.out.println("Codice movimento non valido");
-			    	}while(!tipologieMovimento.containsKey(m.codiceMovimento));
+//			    	do{
+//			    		System.out.println("Inserisci il codice del movimento");
+//			    		m.codiceMovimento=sc.nextLine().toUpperCase();
+//			    		if(!tipologieMovimento.containsKey(m.codiceMovimento))
+//			    			System.out.println("Codice movimento non valido");
+//			    	}while(!tipologieMovimento.containsKey(m.codiceMovimento));
+			    	m.codiceMovimento=verificaCodice(sc, tipologieMovimento, "Inserisci il codice del movimento","E");
+
 			    	
 			    	if(m.codiceMovimento.equalsIgnoreCase("E01")) {
 			    		System.out.println("vuoi inserire il codice fornitore?(s/n)");
 			    		sceltaOpz=sc.nextLine();
 			    		if(sceltaOpz.equalsIgnoreCase("s")) {
-			    			do{
-					    		System.out.println("Inserisci il codice fornitore");
-					    		m.riferimento=sc.nextLine().toUpperCase();
-					    		if(!fornitori.containsKey(m.riferimento))
-					    			System.out.println("Codice fornitore non valido");
-					    	}while(!fornitori.containsKey(m.riferimento));
-			    			
+//			    			do{
+//					    		System.out.println("Inserisci il codice fornitore");
+//					    		m.riferimento=sc.nextLine().toUpperCase();
+//					    		if(!fornitori.containsKey(m.riferimento))
+//					    			System.out.println("Codice fornitore non valido");
+//					    	}while(!fornitori.containsKey(m.riferimento));
+					    	m.riferimento=verificaCodice(sc, fornitori, "Inserisci il codice del fornitore","F");
+
 			    		}
 			    	}
 			    	if(m.codiceMovimento.equalsIgnoreCase("E02")) {
 			    		System.out.println("vuoi inserire il codice cliente?(s/n)");
 			    		sceltaOpz=sc.nextLine();
 			    		if(sceltaOpz.equalsIgnoreCase("s")) {
-			    			do{
-					    		System.out.println("Inserisci il codice cliente");
-					    		m.riferimento=sc.nextLine().toUpperCase();
-					    		if(!clienti.containsKey(m.riferimento))
-					    			System.out.println("Codice cliente non valido");
-					    	}while(!clienti.containsKey(m.riferimento));
+//			    			do{
+//					    		System.out.println("Inserisci il codice cliente");
+//					    		m.riferimento=sc.nextLine().toUpperCase();
+//					    		if(!clienti.containsKey(m.riferimento))
+//					    			System.out.println("Codice cliente non valido");
+//					    	}while(!clienti.containsKey(m.riferimento));
+					    	m.riferimento=verificaCodice(sc, clienti, "Inserisci il codice del cliente","C");
+
 			    		}
 			    	}
 			    	
 			    	elencoMovimenti.add(m);
 			    	System.out.println("Quantitá movimenti" + elencoMovimenti.size());
 			      	System.out.println("(1) per andare al menú prencipale");
-			    	System.out.println("(2) per inserire un altro movimento in uscita");
+			    	System.out.println("(2) per inserire un altro movimento in entrata");
+				    System.out.println("(3) per uscire premi");
+
 	
-			    	sceltaMenu2=sc.nextInt();
-			    	sc.nextLine();
-		    	}while(sceltaMenu2==2);
-		    }else if(sceltaMenu==2) {
+			    	sceltaMenu2=sc.nextLine();
+			    	
+		    	}while(sceltaMenu2.equals("2"));
+		    }else if(sceltaMenu.equals("2")) {
 		    	do {
+		    		sceltaMenu2="2";
+
 			    	m=new Movimento();
 			    	System.out.println("Stai inserendo un movimento in uscita");
 			    	System.out.println("inserisci la data del movimento (gg/mm/aaaa): ");
-			    	m.data=LocalDate.parse(sc.nextLine(), df);
-			    	
-			    	do{
-			    		System.out.println("Inserisci il codice del prodotto");
-			    		m.codiceProdotto=sc.nextLine().toUpperCase();
-			    		if(!prodotti.containsKey(m.codiceProdotto))
-			    			System.out.println("Codice prodotto non valido");
-			    	}while(!prodotti.containsKey(m.codiceProdotto));
+			    	  try {
+	                        m.data = LocalDate.parse(sc.nextLine(), df);
+	                    } catch (Exception e) {
+	                        System.out.println("Data non valida. Riprova.");
+	                        continue;
+	                    }			    	
+//			    	do{
+//			    		System.out.println("Inserisci il codice del prodotto");
+//			    		m.codiceProdotto=sc.nextLine().toUpperCase();
+//			    		if(!prodotti.containsKey(m.codiceProdotto))
+//			    			System.out.println("Codice prodotto non valido");
+//			    	}while(!prodotti.containsKey(m.codiceProdotto));
+			    	m.codiceProdotto=verificaCodice(sc, prodotti, "Inserisci il codice del prodotto","P");
+
 			    	
 			    	System.out.println("Inserisci la quantitá del prodotto");
 			    	m.quantitaProdotto=(sc.nextInt()*-1);
 			     	sc.nextLine();
-			    	do{
-			    		System.out.println("Inserisci il codice del movimento");
-			    		m.codiceMovimento=sc.nextLine().toUpperCase();
-			    		if(!tipologieMovimento.containsKey(m.codiceMovimento))
-			    			System.out.println("Codice movimento non valido");
-			    	}while(!tipologieMovimento.containsKey(m.codiceMovimento));
-			    	
+//			    	do{
+//			    		System.out.println("Inserisci il codice del movimento");
+//			    		m.codiceMovimento=sc.nextLine().toUpperCase();
+//			    		if(!tipologieMovimento.containsKey(m.codiceMovimento))
+//			    			System.out.println("Codice movimento non valido");
+//			    	}while(!tipologieMovimento.containsKey(m.codiceMovimento));
+			    	m.codiceMovimento=verificaCodice(sc, tipologieMovimento, "Inserisci il codice del movimento","U");
+
+			     	
 			    	if(m.codiceMovimento.equalsIgnoreCase("U02")) {
 			    		System.out.println("vuoi inserire il codice fornitore?(s/n)");
 			    		sceltaOpz=sc.nextLine();
 			    		if(sceltaOpz.equalsIgnoreCase("s")) {
-			    			do{
-					    		System.out.println("Inserisci il codice fornitore");
-					    		m.riferimento=sc.nextLine().toUpperCase();
-					    		if(!fornitori.containsKey(m.riferimento))
-					    			System.out.println("Codice fornitore non valido");
-					    	}while(!fornitori.containsKey(m.riferimento));
+//			    			do{
+//					    		System.out.println("Inserisci il codice fornitore");
+//					    		m.riferimento=sc.nextLine().toUpperCase();
+//					    		if(!fornitori.containsKey(m.riferimento))
+//					    			System.out.println("Codice fornitore non valido");
+//					    	}while(!fornitori.containsKey(m.riferimento));
+					    	m.riferimento=verificaCodice(sc, fornitori, "Inserisci il codice del fornitore","F");
+
 			    		}
 			    	}
 			    	if(m.codiceMovimento.equalsIgnoreCase("U01")) {
 			    		System.out.println("vuoi inserire il codice cliente?(s/n)");
 			    		sceltaOpz=sc.nextLine();
 			    		if(sceltaOpz.equalsIgnoreCase("s")) {
-			    			do{
-					    		System.out.println("Inserisci il codice cliente");
-					    		m.riferimento=sc.nextLine().toUpperCase();
-					    		if(!clienti.containsKey(m.riferimento))
-					    			System.out.println("Codice cliente non valido");
-					    	}while(!clienti.containsKey(m.riferimento));
+//			    			do{
+//					    		System.out.println("Inserisci il codice cliente");
+//					    		m.riferimento=sc.nextLine().toUpperCase();
+//					    		if(!clienti.containsKey(m.riferimento))
+//					    			System.out.println("Codice cliente non valido");
+//					    	}while(!clienti.containsKey(m.riferimento));
+					    	m.riferimento=verificaCodice(sc, clienti, "Inserisci il codice del cliente","C");
+
 			    		}
 			    	}
 			    	elencoMovimenti.add(m);
 			    	System.out.println("Quantitá movimenti" + elencoMovimenti.size());
 			    	System.out.println("(1) per andare al menú prencipale");
 			    	System.out.println("(2) per inserire un altro movimento in uscita");
+				    System.out.println("(3) per uscire premi");
+
 
 	
-			    	sceltaMenu2=sc.nextInt();
-			    	sc.nextLine();
-		    	}while(sceltaMenu2==2);
-		    }else if(sceltaMenu==3) {
+			    	sceltaMenu2=sc.nextLine();
+		    	}while(sceltaMenu2.equals("2"));
+		    	
+		    	
+		    }else if(sceltaMenu.equals("3")) {
 		    	System.out.println("Elenco di tutti i movimenti in entrata: ");
 		    	for(int i=0;i<elencoMovimenti.size();i++) {
 		    		System.out.println("Movimento nr "+ (i+1));
@@ -256,9 +291,10 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 						
 		    	}
 		    	 System.out.println("Per andare al menú principale premi (1)");
-				    sceltaMenu2=sc.nextInt();
-				    sc.nextLine();
-		    }else if(sceltaMenu==4) {
+				 System.out.println("Per uscire premi (3)");
+
+				    sceltaMenu2=sc.nextLine();
+		    }else if(sceltaMenu.equals("4")) {
 		    	System.out.println("Elenco di tutti i movimenti in uscita: ");
 		    	for(int i=0;i<elencoMovimenti.size();i++) {
 		    		System.out.println("Movimento nr "+ (i+1));
@@ -266,7 +302,7 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 					System.out.print("Codice prodotto: "+elencoMovimenti.get(i).codiceProdotto);
 					System.out.println(", Nome prodotto: "+prodotti.get(elencoMovimenti.get(i).codiceProdotto));
 	
-					System.out.println("Quantitá prodotto: "+elencoMovimenti.get(i).quantitaProdotto);
+					System.out.println("Quantitá prodotto: "+(elencoMovimenti.get(i).quantitaProdotto)*-1);
 					System.out.print("Codice movimento: "+elencoMovimenti.get(i).codiceMovimento);		
 					System.out.println(", Descrizione movimento: "+tipologieMovimento.get(elencoMovimenti.get(i).codiceMovimento));
 					if(elencoMovimenti.get(i).codiceMovimento.equals("U01")) {
@@ -279,9 +315,10 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 				    
 		    	}
 		    	System.out.println("Per andare al menú principale premi (1)");
-			    sceltaMenu2=sc.nextInt();
-			    sc.nextLine();	
-		    }else if(sceltaMenu==5) {
+			    System.out.println("Per uscire premi (3)");
+
+			    sceltaMenu2=sc.nextLine();
+		    }else if(sceltaMenu.equals("5")) {
 		    	System.out.println("Scrivi il codice del prodotto di cui vuoi verificare la giacenza: ");
 		    	codiceProdottoScelto=sc.nextLine();
 		    	for(int i=0;i<elencoMovimenti.size();i++) {
@@ -293,22 +330,24 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		   
 		    	System.out.println(giacenza);
 			    System.out.println("Per andare al menú principale premi (1)");
-			    sceltaMenu2=sc.nextInt();
-			    sc.nextLine();
+			    System.out.println("Per uscire premi (3)");
+
+			    sceltaMenu2=sc.nextLine();
 		    }
 
-	    }while(sceltaMenu2==1);
+	    }while(sceltaMenu2.equals("1") && !sceltaMenu.equals("6"));
 	}
 
-	/*private static String verificaCodice(Scanner sc, HashMap<String, String> elencoValori, String messaggio) {
+	private static String verificaCodice(Scanner sc, HashMap<String, String> elencoValori, String messaggio,String letteraIniziale) {
+		String codice;
 		do{
 			System.out.println(messaggio);
-			String codice = sc.nextLine().toUpperCase();
-			if(!elenco.containsKey(codice))
+			codice = sc.nextLine().toUpperCase();
+			if(!elencoValori.containsKey(codice)&&codice.startsWith(letteraIniziale))
 				System.out.println("Codice non valido");
-		}while(!elenco.containsKey(codice));
+		}while(!elencoValori.containsKey(codice));
 		System.out.println("Hai selezionato: "+elencoValori.get(codice));
 		return codice;
-	}*/
+	}
 
 }
