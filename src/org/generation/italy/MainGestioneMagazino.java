@@ -77,6 +77,7 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		String sceltaMenu2;
 		String codiceProdottoScelto;
 		int giacenza = 0;
+		int idMov=0;
 
 	    fornitori.put("F01", "Alfa");
 	    fornitori.put("F02", "Beta");
@@ -125,6 +126,8 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		    		sceltaMenu2="2";
 
 		    		m=new Movimento();
+		    		idMov++;
+		    		m.idMovimento=idMov;
 			    	System.out.println("Stai inserendo un movimento in entrata");
 			    	System.out.println("inserisci la data del movimento (gg/mm/aaaa): ");
 			    	//m.data=LocalDate.parse(sc.nextLine(), df);
@@ -195,11 +198,16 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 			    	sceltaMenu2=sc.nextLine();
 			    	
 		    	}while(sceltaMenu2.equals("2"));
+		    	
+		    	
+		    	
 		    }else if(sceltaMenu.equals("2")) {
 		    	do {
 		    		sceltaMenu2="2";
 
 			    	m=new Movimento();
+			    	idMov++;
+		    		m.idMovimento=idMov;
 			    	System.out.println("Stai inserendo un movimento in uscita");
 			    	System.out.println("inserisci la data del movimento (gg/mm/aaaa): ");
 			    	  try {
@@ -271,7 +279,7 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		    	
 		    }else if(sceltaMenu.equals("3")) {
 		    	System.out.println("Elenco di tutti i movimenti in entrata: ");
-		    	for(int i=0;i<elencoMovimenti.size();i++) {
+		    	/*for(int i=0;i<elencoMovimenti.size();i++) {
 		    		System.out.println("Movimento nr "+ (i+1));
 		    		System.out.println("data: "+ elencoMovimenti.get(i).data.format(df));
 					System.out.print("Codice prodotto: "+elencoMovimenti.get(i).codiceProdotto);
@@ -289,6 +297,10 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 					   
 					}
 						
+		    	}*/
+		    	for(Movimento mov:elencoMovimenti) {
+		    		if(mov.codiceMovimento.startsWith("E"))
+		    			System.out.println(mov.toString());
 		    	}
 		    	 System.out.println("Per andare al menú principale premi (1)");
 				 System.out.println("Per uscire premi (3)");
@@ -296,7 +308,7 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 				    sceltaMenu2=sc.nextLine();
 		    }else if(sceltaMenu.equals("4")) {
 		    	System.out.println("Elenco di tutti i movimenti in uscita: ");
-		    	for(int i=0;i<elencoMovimenti.size();i++) {
+		    	/*for(int i=0;i<elencoMovimenti.size();i++) {
 		    		System.out.println("Movimento nr "+ (i+1));
 		    		System.out.println("data: "+ elencoMovimenti.get(i).data.format(df));
 					System.out.print("Codice prodotto: "+elencoMovimenti.get(i).codiceProdotto);
@@ -313,6 +325,10 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 								+fornitori.get(elencoMovimenti.get(i).riferimento));
 					}
 				    
+		    	}*/
+		      	for(Movimento mov:elencoMovimenti) {
+		    		if(mov.codiceMovimento.startsWith("U"))
+		    			System.out.println(mov.toString());
 		    	}
 		    	System.out.println("Per andare al menú principale premi (1)");
 			    System.out.println("Per uscire premi (3)");
@@ -342,6 +358,12 @@ NB: ad ogni nuovo movimento viene assegnato un codice univoco autoincrementante
 		String codice;
 		do{
 			System.out.println(messaggio);
+			for(String chiave:elencoValori.keySet()) {
+				if(chiave.startsWith(letteraIniziale)) {
+					System.out.println("codice "+chiave+": "+elencoValori.get(chiave));
+				}
+			}
+			
 			codice = sc.nextLine().toUpperCase();
 			if(!elencoValori.containsKey(codice)&&codice.startsWith(letteraIniziale))
 				System.out.println("Codice non valido");
